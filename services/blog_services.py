@@ -1,7 +1,9 @@
 import json
 import os
 
-DATA_FILE_PATH = os.path.join(os.path.dirname(__file__), "..", "data.json")
+DATA_FILE_PATH = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "data.json")
+)
 
 
 def get_all_posts() -> list:
@@ -46,7 +48,7 @@ def add_post(author: str, title: str, content: str) -> dict:
     new_post = {"id": new_id, "author": author, "title": title, "content": content}
     posts.append(new_post)
 
-    with open(DATA_FILE_PATH, "w", encodinf="utf-8") as file:
+    with open(DATA_FILE_PATH, "w", encoding="utf-8") as file:
         json.dump(posts, file, indent=4)
 
     return new_post
