@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, url_for
 
-from services.blog_services import add_post, get_all_posts
+from services.blog_services import add_post, delete_post, get_all_posts
 
 blog_bp = Blueprint("blog", __name__)
 
@@ -41,3 +41,17 @@ def add():
         return redirect(url_for("blog.index"))
 
     return render_template("add.html")
+
+
+@blog_bp.route("/delete/<int:post_id>")
+def delete(post_id: int):
+    """
+    Handles the route for deleting a specified blog post.
+
+    Calls the service layer to remove the post and redirects back to the index page.
+
+    :param post_id: The unique identifier of the blog post to delete.
+    :return: A redirection response to the index page.
+    """
+    delete_post(post_id)
+    return redirect(url_for("blog.index"))

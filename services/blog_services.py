@@ -52,3 +52,27 @@ def add_post(author: str, title: str, content: str) -> dict:
         json.dump(posts, file, indent=4)
 
     return new_post
+
+
+def delete_post(post_id: int) -> bool:
+    """
+    Deletes a blog post with the specified ID from the JSON storage file.
+
+    Reads the existing posts, filters out the post matching the given ID,
+    and saves the updated list back to the file.
+
+    :param post_id: The unique identifier of the blog post to delete.
+    :return: True if a post was successfully deleted, False otherwise.
+    :rtype: bool
+    """
+    posts = get_all_posts()
+
+    # Filter out the post with the given id
+    updated_posts = [post for post in posts if post.get("id") != post_id]
+    if len(posts) == len(updated_posts):
+        return False
+
+    with open(DATA_FILE_PATH, "w", encoding="utf-8") as file:
+        json.dump(updated_posts, file, indent=4)
+
+    return True
