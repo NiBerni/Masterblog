@@ -76,3 +76,46 @@ def delete_post(post_id: int) -> bool:
         json.dump(updated_posts, file, indent=4)
 
     return True
+
+
+def fetch_post_by_id(post_id: int) -> dict | None:
+    """
+    Fetches a specific blog post by its ID from the storage file.
+
+    :param post_id: The unique identifier of the blog post.
+    :return: The blog post dictionary if found, otherwise None.
+    :rtype: dict or None
+    """
+    posts = get_all_posts()
+
+    for post in posts:
+        if post.get("id") == post_id:
+            return post
+    return None
+
+
+def update_post(post_id: int, author: str, title: str, content: str) -> dict | None:
+    """
+    Updates an existing blog post in the JSON storage file.
+
+    :param post_id: The unique identifier of the blog post to update.
+    :param author: The updated author of the blog post.
+    :param title: The updated title of the blog post.
+    :param content: The updated content of the blog post.
+    :return: The updated blog post dictionary if successful, otherwise None.
+    :rtype: dict or None
+    """
+    posts = get_all_posts()
+
+    for post in posts:
+        if post.get("id") == post_id:
+            post["author"] = author
+            post["title"] = title
+            post["content"] = content
+
+            with open(DATA_FILE_PATH, "w", encoding="utf-8") as file:
+                json.dump(posts, file, indent=4)
+
+            return post
+
+    return None

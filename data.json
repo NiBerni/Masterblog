@@ -1,20 +1,14 @@
 [
   {
     "id": 1,
-    "author": "John Doe",
-    "title": "My First Blog Post",
-    "content": "This is my first blog post."
+    "author": "John Smith",
+    "title": "My First Blog Post Update",
+    "content": "This is my first blog post And I updated it"
   },
   {
     "id": 2,
     "author": "Jane Doe",
     "title": "My Second Blog Post",
     "content": "This is my second blog post."
-  },
-  {
-    "id": 3,
-    "author": "Jane Smith",
-    "title": "First Submit",
-    "content": "First time submitting via a form"
   }
 ]

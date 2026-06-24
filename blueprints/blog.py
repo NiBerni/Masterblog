@@ -1,6 +1,12 @@
 from flask import Blueprint, redirect, render_template, request, url_for
 
-from services.blog_services import add_post, delete_post, get_all_posts
+from services.blog_services import (
+    add_post,
+    delete_post,
+    fetch_post_by_id,
+    get_all_posts,
+    update_post,
+)
 
 blog_bp = Blueprint("blog", __name__)
 
@@ -55,3 +61,31 @@ def delete(post_id: int):
     """
     delete_post(post_id)
     return redirect(url_for("blog.index"))
+
+
+@blog_bp.route("/update/<int:post_id>", methods=["GET", "POST"])
+def update(post_id: int):
+    """
+    Handles the route for updating a specified blog post.
+
+    on GET: Renders the form pre-populated with existing post data
+    on POST: Extracts form data, updates the post via service layer,
+    and redirects to the index page.
+    :param post_id: The unique identifier of the blog post to update.
+    :return: Rendered HTML template on GET, a redirection response on POST, or a 404 error string.
+    """
+    post = fetch_post_by_id(post_id)
+    if post is None:
+        return "Post not found", 404
+
+    if request.method == "POST":
+        author = request.form.get("author")
+        title = request.form.get("title")
+        content = request.form.get("content")
+
+        if author and title and content:
+            update_post(post_id, author, title, content)
+
+        return redirect(url_for("blog.index"))
+
+    return render_template("update.html", post=post)
