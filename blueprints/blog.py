@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, redirect, render_template, request, url_for
 
-from services.blog_services import get_all_posts
+from services.blog_services import add_post, get_all_posts
 
 blog_bp = Blueprint("blog", __name__)
 
@@ -17,3 +17,27 @@ def index() -> str:
     """
     posts = get_all_posts()
     return render_template("index.html", posts=posts)
+
+
+@blog_bp.route("/add", methods=["GET", "POST"])
+def add():
+    """
+    Handles the route for adding a new blog post.
+
+    On GET: Renders the form to add a new post.
+    On POST: Extracts form data, calls the service layer to save the post,
+    and redirects to the index page.
+
+    :return: Rendered HTML template on GET, or a redirection response on POST.
+    """
+    if request.method == "POST":
+        author = request.form.get("author")
+        title = request.form.get("title")
+        content = request.form.get("content")
+
+        if author and title and content:
+            add_post(author, title, content)
+
+        return redirect(url_for("blog.index"))
+
+    return render_template("add.html")
