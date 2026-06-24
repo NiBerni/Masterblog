@@ -1,7 +1,7 @@
 import json
 import os
 
-DATA_FILE_PATH = os.path.join(os.path.dirname(__file__), "data.json")
+DATA_FILE_PATH = os.path.join(os.path.dirname(__file__), "..", "data.json")
 
 
 def get_all_posts() -> list:
